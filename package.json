@@ -45,6 +45,8 @@
   },
   "dependencies": {
     "babelify": "^6.0.0",
+    "create-react-class": "^15.6.3",
+    "prop-types": "^15.6.1",
     "react-flip-move": "^2.9.1",
     "xhr": "^1.17.0"
   },
