@@ -3,13 +3,16 @@
 var React = require('react'),
     ReactDOM = require('react-dom'),
     FlipMove = require('react-flip-move'),
+    PropTypes = require('prop-types'),
+    createReactClass = require('create-react-class'),
+    debounce = require('debounce'),
     search = require('./search');
 
 /**
  * Geocoder component: connects to Mapbox.com Geocoding API
  * and provides an autocompleting interface for finding locations.
  */
-var Geocoder = React.createClass({
+var Geocoder = createReactClass({
   displayName: 'Geocoder',
   getDefaultProps: function getDefaultProps() {
     return {
@@ -39,28 +42,30 @@ var Geocoder = React.createClass({
       searchTime: new Date(),
       showList: false,
       inputValue: '',
-      typedInput: '' };
+      typedInput: '' // this is what the user has explicitly typed
+    };
   },
 
   propTypes: {
-    endpoint: React.PropTypes.string,
-    defaultInputValue: React.PropTypes.string,
-    source: React.PropTypes.string,
-    inputClass: React.PropTypes.string,
-    resultClass: React.PropTypes.string,
-    resultsClass: React.PropTypes.string,
-    inputPosition: React.PropTypes.string,
-    inputPlaceholder: React.PropTypes.string,
-    resultFocusClass: React.PropTypes.string,
-    onSelect: React.PropTypes.func.isRequired,
-    onSuggest: React.PropTypes.func,
-    onInputChange: React.PropTypes.func,
-    accessToken: React.PropTypes.string.isRequired,
-    proximity: React.PropTypes.string,
-    bbox: React.PropTypes.string,
-    showLoader: React.PropTypes.bool,
-    focusOnMount: React.PropTypes.bool,
-    types: React.PropTypes.string
+    endpoint: PropTypes.string,
+    defaultInputValue: PropTypes.string,
+    source: PropTypes.string,
+    inputClass: PropTypes.string,
+    resultClass: PropTypes.string,
+    resultsClass: PropTypes.string,
+    inputPosition: PropTypes.string,
+    inputPlaceholder: PropTypes.string,
+    resultFocusClass: PropTypes.string,
+    onSelect: PropTypes.func.isRequired,
+    onSuggest: PropTypes.func,
+    onInputChange: PropTypes.func,
+    accessToken: PropTypes.string.isRequired,
+    proximity: PropTypes.string,
+    bbox: PropTypes.string,
+    showLoader: PropTypes.bool,
+    focusOnMount: PropTypes.bool,
+    types: PropTypes.string,
+    language: PropTypes.string
   },
   componentWillMount: function componentWillMount() {
     this.setState({ inputValue: this.props.defaultInputValue });
@@ -73,6 +78,10 @@ var Geocoder = React.createClass({
       this.setState({ inputValue: props.defaultInputValue });
     }
   },
+
+  search: debounce(function (value) {
+    return search(this.props.endpoint, this.props.source, this.props.accessToken, this.props.proximity, this.props.bbox, this.props.types, this.props.language, value, this.onResult);
+  }, 300),
   onInput: function onInput(e) {
     var value = e.target.value;
     this.setState({ loading: true, showList: true, inputValue: value, typedInput: value });
@@ -85,7 +94,7 @@ var Geocoder = React.createClass({
         showList: false
       });
     } else {
-      search(this.props.endpoint, this.props.source, this.props.accessToken, this.props.proximity, this.props.bbox, this.props.types, value, this.onResult);
+      this.search(value);
     }
   },
   moveFocus: function moveFocus(dir) {
@@ -204,8 +213,13 @@ var Geocoder = React.createClass({
                   onClick: _this.clickOption.bind(_this, result, i),
                   tabIndex: '-1',
                   className: _this.props.resultClass + ' ' + (i === _this.state.focus ? _this.props.resultFocusClass : ''),
-                  key: result.id },
-                result.place_name
+                  key: result.id
+                },
+                React.createElement('span', {
+                  dangerouslySetInnerHTML: {
+                    __html: result.place_name.replace(new RegExp('(' + _this.state.inputValue + ')', 'i'), '<strong>$1</strong>')
+                  }
+                })
               )
             );
           })
