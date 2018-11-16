@@ -57,7 +57,8 @@ var Geocoder = React.createClass({
     bbox: React.PropTypes.string,
     showLoader: React.PropTypes.bool,
     focusOnMount: React.PropTypes.bool,
-    types: React.PropTypes.string
+    types: React.PropTypes.string,
+    language: React.PropTypes.string,
   },
   componentWillMount() {
     this.setState({inputValue: this.props.defaultInputValue});
@@ -88,6 +89,7 @@ var Geocoder = React.createClass({
         this.props.proximity,
         this.props.bbox,
         this.props.types,
+        this.props.language,
         value,
         this.onResult);
     }
