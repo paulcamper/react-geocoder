@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:kmwhelan93/react-geocoder-autocomplete.git"
+    "url": "git@github.com:paulcamper/react-geocoder.git"
   },
   "browserify": {
     "transform": [
@@ -30,9 +30,9 @@
   "author": "Tom MacWright",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/kmwhelan93/react-geocoder-autocomplete/issues"
+    "url": "https://github.com/paulcamper/react-geocoder/issues"
   },
-  "homepage": "https://github.com/kmwhelan93/react-geocoder-autocomplete",
+  "homepage": "https://github.com/paulcamper/react-geocoder",
   "devDependencies": {
     "babel-cli": "^6.23.0",
     "babel-core": "^6.23.1",
