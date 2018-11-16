@@ -3,6 +3,7 @@ var React = require('react'),
   FlipMove = require('react-flip-move'),
   PropTypes = require('prop-types'),
   createReactClass = require('create-react-class'),
+  debounce = require('debounce'),
   search = require('./search');
 
 /**
@@ -72,7 +73,21 @@ var Geocoder = createReactClass({
     if (props.defaultInputValue !== this.props.inputValue) {
       this.setState({inputValue: props.defaultInputValue});
     }
-  }, onInput(e) {
+  },
+  search: debounce(function (value) {
+    return search(
+      this.props.endpoint,
+      this.props.source,
+      this.props.accessToken,
+      this.props.proximity,
+      this.props.bbox,
+      this.props.types,
+      this.props.language,
+      value,
+      this.onResult
+    );
+  }, 300),
+  onInput(e) {
     var value = e.target.value;
     this.setState({loading:true, showList: true, inputValue: value, typedInput: value});
     this.props.onInputChange(value);
@@ -84,16 +99,7 @@ var Geocoder = createReactClass({
         showList:false
       });
     } else {
-      search(
-        this.props.endpoint,
-        this.props.source,
-        this.props.accessToken,
-        this.props.proximity,
-        this.props.bbox,
-        this.props.types,
-        this.props.language,
-        value,
-        this.onResult);
+      this.search(value)
     }
   },
   moveFocus(dir) {
