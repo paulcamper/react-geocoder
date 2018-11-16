@@ -204,7 +204,18 @@ var Geocoder = React.createClass({
                     onClick={this.clickOption.bind(this, result, i)}
                     tabIndex="-1"
                     className={this.props.resultClass + ' ' + (i === this.state.focus ? this.props.resultFocusClass : '')}
-                    key={result.id}>{result.place_name}</a>
+                    key={result.id}
+                  >
+                    <span
+                      dangerouslySetInnerHTML={{
+                      __html: result.place_name
+                        .replace(
+                          new RegExp(`(${this.state.inputValue})`, 'i'),
+                          '<strong>$1</strong>'
+                        ),
+                      }}
+                    />
+                  </a>
                 </li>
               ))}
             </ul>
