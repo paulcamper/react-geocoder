@@ -217,7 +217,7 @@ var Geocoder = createReactClass({
                 },
                 React.createElement('span', {
                   dangerouslySetInnerHTML: {
-                    __html: result.place_name.replace(new RegExp('(' + _this.state.inputValue + ')', 'i'), '<strong>$1</strong>')
+                    __html: result.place_name.replace(new RegExp('(' + (_this.state.inputValue && _this.state.inputValue.replace(/(\W)/g, '\\$1')) + ')', 'i'), '<strong>$1</strong>')
                   }
                 })
               )
