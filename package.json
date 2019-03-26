@@ -1,6 +1,6 @@
 {
   "name": "react-geocoder",
-  "version": "3.0.13",
+  "version": "3.0.14",
   "description": "a mapbox geocoder component for autocomplete",
   "main": "index.js",
   "scripts": {
@@ -44,7 +44,7 @@
     "watchify": "^2.1.0"
   },
   "dependencies": {
-    "babelify": "^6.0.0",
+    "babelify": "^8.0.0",
     "create-react-class": "^15.6.3",
     "debounce": "^1.2.0",
     "prop-types": "^15.6.1",
