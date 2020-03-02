@@ -28,6 +28,7 @@ var Geocoder = createReactClass({
       types: '',
       onSuggest: function() {},
       onInputChange: function() {},
+      onBlur: function onInputBlur() {},
       focusOnMount: true
     };
   },
@@ -54,6 +55,7 @@ var Geocoder = createReactClass({
     resultFocusClass: PropTypes.string,
     onSelect: PropTypes.func.isRequired,
     onSuggest: PropTypes.func,
+    onBlur: PropTypes.func,
     onInputChange: PropTypes.func,
     accessToken: PropTypes.string.isRequired,
     proximity: PropTypes.string,
@@ -182,6 +184,7 @@ var Geocoder = createReactClass({
   handleBlur(e) {
     if (!e || !e.relatedTarget || !e.relatedTarget.parentElement || !e.relatedTarget.parentElement.parentElement || e.relatedTarget.parentElement.parentElement.id !== "react-geo-list") {
       this.setState({showList:false});
+      this.props.onBlur(e, this.state.results);
     }
   },
   render() {
