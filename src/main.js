@@ -29,6 +29,7 @@ var Geocoder = createReactClass({
       onSuggest: function() {},
       onInputChange: function() {},
       onBlur: function onInputBlur() {},
+      onEsc: function onInputEsc() {},
       focusOnMount: true
     };
   },
@@ -56,6 +57,7 @@ var Geocoder = createReactClass({
     onSelect: PropTypes.func.isRequired,
     onSuggest: PropTypes.func,
     onBlur: PropTypes.func,
+    onEsc: PropTypes.func,
     onInputChange: PropTypes.func,
     accessToken: PropTypes.string.isRequired,
     proximity: PropTypes.string,
@@ -145,6 +147,7 @@ var Geocoder = createReactClass({
         break;
       // esc
       case 27:
+        this.props.onEsc(e, this.state.results)
         this.setState({showList:false, results:[]});
         break;
       // accept
